@@ -10,10 +10,5 @@ public class BusinessCookApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BusinessCookApplication.class, args);
 	}
-	
-	@GetMapping
-	public String homeMessage() {
-		return "This is a RESTful API";
-	}
 
 }
