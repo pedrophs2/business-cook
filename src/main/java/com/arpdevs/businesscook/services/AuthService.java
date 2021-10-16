@@ -41,6 +41,11 @@ public class AuthService {
 		if(errors.isPresent())
 			return new ResponseHandler<User>(HttpStatus.BAD_REQUEST, errors.get());
 		
+		User validation = repository.findByEmailContaining(user.getEmail());
+		
+		if(validation != null)
+			return new ResponseHandler<User>(HttpStatus.BAD_REQUEST, "Usuário já cadastrado");
+		
 		repository.save(user);
 		
 		return new ResponseHandler<User>(HttpStatus.CREATED, "Usuário cadastrado com sucesso !", user);

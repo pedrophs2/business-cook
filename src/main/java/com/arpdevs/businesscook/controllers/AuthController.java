@@ -22,13 +22,13 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity login(@RequestBody User user) {	
 		ResponseHandler<User> response = authService.login(user);
-		return ResponseEntity.status(response.getStatus()).body(response.getResponse());
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/signup")
 	public ResponseEntity signUp(@RequestBody User user) {
 		ResponseHandler<User> response = authService.signUp(user);
-		return ResponseEntity.status(response.getStatus()).body(response.getResponse());
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 
 }
