@@ -3,26 +3,25 @@ package com.arpdevs.businesscook.handlers;
 import org.springframework.http.HttpStatus;
 
 public class ResponseHandler<E> {
-	private HttpStatus code;
+
+	private HttpStatus status;
 	private String message;
 	private E response;
 
 	public ResponseHandler() {
 	}
 
-	public ResponseHandler(HttpStatus code, String message, E response) {
+	public ResponseHandler(HttpStatus status, String message) {
 		super();
-		this.code = code;
+		this.status = status;
+		this.message = message;
+	}
+
+	public ResponseHandler(HttpStatus status, String message, E response) {
+		super();
+		this.status = status;
 		this.message = message;
 		this.response = response;
-	}
-
-	public HttpStatus getCode() {
-		return code;
-	}
-
-	public void setCode(HttpStatus code) {
-		this.code = code;
 	}
 
 	public String getMessage() {
@@ -39,6 +38,14 @@ public class ResponseHandler<E> {
 
 	public void setResponse(E response) {
 		this.response = response;
+	}
+
+	public HttpStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(HttpStatus status) {
+		this.status = status;
 	}
 
 }

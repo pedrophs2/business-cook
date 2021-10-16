@@ -1,33 +1,34 @@
 package com.arpdevs.businesscook.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.arpdevs.businesscook.handlers.ResponseHandler;
 import com.arpdevs.businesscook.models.entities.User;
-import com.arpdevs.businesscook.models.repositories.UserRepository;
+import com.arpdevs.businesscook.services.AuthService;
 
 @RestController
 @RequestMapping("/auth")
+@SuppressWarnings("rawtypes")
 public class AuthController {
 	
 	@Autowired
-	UserRepository repository;
+	AuthService authService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<User> login(@RequestBody User user) {
-		User loggedUser = repository.findByEmailContaining(user.getEmail());
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(loggedUser);
+	public ResponseEntity login(@RequestBody User user) {	
+		ResponseHandler<User> response = authService.login(user);
+		return ResponseEntity.status(response.getStatus()).body(response.getResponse());
 	}
 	
 	@PostMapping("/signup")
-	public ResponseEntity<User> signup(@RequestBody User user) {
-		repository.save(user);
-		return ResponseEntity.status(HttpStatus.CREATED).body(user);
+	public ResponseEntity signUp(@RequestBody User user) {
+		ResponseHandler<User> response = authService.signUp(user);
+		return ResponseEntity.status(response.getStatus()).body(response.getResponse());
 	}
 
 }
