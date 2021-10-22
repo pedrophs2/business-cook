@@ -16,7 +16,7 @@ public class LoginValidator extends Validator<User> {
 	
 	public Optional<String> validatePassword() {
 		if(object.getPassword() == null || object.getPassword().trim().equals(""))
-			return Optional.of("Email deve ser preenchido");
+			return Optional.of("Senha deve ser preenchida");
 		
 		return Optional.empty();
 	}

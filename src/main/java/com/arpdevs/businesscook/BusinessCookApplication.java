@@ -13,7 +13,7 @@ public class BusinessCookApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BusinessCookApplication.class, args);
 	}
-	
+
 	@Bean
 	public AuthService getAuthService() {
 		return new AuthService();
