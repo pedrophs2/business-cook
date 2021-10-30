@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.arpdevs.businesscook.services.AuthService;
+import com.arpdevs.businesscook.services.ProductService;
 
 @SpringBootApplication
 public class BusinessCookApplication {
@@ -17,6 +18,11 @@ public class BusinessCookApplication {
 	@Bean
 	public AuthService getAuthService() {
 		return new AuthService();
+	}
+	
+	@Bean
+	public ProductService getProductService() {
+		return new ProductService();
 	}
 
 }

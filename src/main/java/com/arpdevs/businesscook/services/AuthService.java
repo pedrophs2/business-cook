@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import com.arpdevs.businesscook.handlers.ResponseHandler;
 import com.arpdevs.businesscook.models.entities.User;
 import com.arpdevs.businesscook.models.repositories.UserRepository;
-import com.arpdevs.businesscook.validators.LoginValidator;
-import com.arpdevs.businesscook.validators.SignUpValidator;
+import com.arpdevs.businesscook.validators.auth.LoginValidator;
+import com.arpdevs.businesscook.validators.auth.SignUpValidator;
 
 public class AuthService {
 
