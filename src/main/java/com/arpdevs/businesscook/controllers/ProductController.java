@@ -18,32 +18,31 @@ import com.arpdevs.businesscook.services.ProductService;
 @RestController
 @RequestMapping("/product")
 @CrossOrigin
-@SuppressWarnings("rawtypes")
 public class ProductController {
 	
 	@Autowired
 	private ProductService productService;
 	
 	@GetMapping
-	public ResponseEntity getAll() {
+	public ResponseEntity<?> getAll() {
 		ResponseHandler<Iterable<Product>> response = productService.getAll();
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity getById(@PathVariable("id") int id) {
+	public ResponseEntity<?> getById(@PathVariable("id") int id) {
 		ResponseHandler<Product> response = productService.getById(id);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping
-	public ResponseEntity createProduct(@RequestBody Product product) {
+	public ResponseEntity<?> createProduct(@RequestBody Product product) {
 		ResponseHandler<Product> response = productService.createProduct(product);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PutMapping
-	public ResponseEntity updateProduct(@RequestBody Product product) {
+	public ResponseEntity<?> updateProduct(@RequestBody Product product) {
 		ResponseHandler<Product> response = productService.updateProduct(product);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}

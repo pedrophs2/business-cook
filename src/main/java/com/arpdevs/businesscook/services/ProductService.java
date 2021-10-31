@@ -17,16 +17,16 @@ public class ProductService {
 	ProductRepository repository;
 	
 	public ResponseHandler<Iterable<Product>> getAll() {
-		return new ResponseHandler<Iterable<Product>>(HttpStatus.FOUND, "Produtos encontrados", repository.findAll());
+		return new ResponseHandler<Iterable<Product>>(HttpStatus.OK, "Produtos encontrados", repository.findAll());
 	}
 	
 	public ResponseHandler<Product> getById(int id) {
 		Optional<Product> product = repository.findById(id);
 		
 		if(product.isPresent())
-			return new ResponseHandler<Product>(HttpStatus.FOUND, "Produto Encontrado", product.get());
+			return new ResponseHandler<Product>(HttpStatus.OK, "Produto Encontrado", product.get());
 		
-		return new ResponseHandler<Product>(HttpStatus.NOT_FOUND, "Nenhum produto encontrado");
+		return new ResponseHandler<Product>(HttpStatus.NO_CONTENT, "Nenhum produto encontrado");
 	}
 
 	public ResponseHandler<Product> createProduct(Product product) {

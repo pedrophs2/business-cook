@@ -15,20 +15,19 @@ import com.arpdevs.businesscook.services.AuthService;
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin
-@SuppressWarnings("rawtypes")
 public class AuthController {
 	
 	@Autowired
 	AuthService authService;
 	
 	@PostMapping("/login")
-	public ResponseEntity login(@RequestBody User user) {	
+	public ResponseEntity<?> login(@RequestBody User user) {	
 		ResponseHandler<User> response = authService.login(user);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/signup")
-	public ResponseEntity signUp(@RequestBody User user) {
+	public ResponseEntity<?> signUp(@RequestBody User user) {
 		ResponseHandler<User> response = authService.signUp(user);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
