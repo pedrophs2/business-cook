@@ -1,7 +1,5 @@
 package com.arpdevs.businesscook.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arpdevs.businesscook.handlers.ResponseHandler;
 import com.arpdevs.businesscook.models.entities.Recipe;
-import com.arpdevs.businesscook.models.entities.RecipeItem;
 import com.arpdevs.businesscook.services.RecipeItemService;
 import com.arpdevs.businesscook.services.RecipeService;
 
