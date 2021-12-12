@@ -17,5 +17,10 @@ public class DefaultController {
 	public String errorMessage() {
 		return "There has been an error, please send a message to our support";
 	}
+	
+	@GetMapping("/testedan")
+	public String testeDan() {
+		return "Hello World !";
+	}
 
 }

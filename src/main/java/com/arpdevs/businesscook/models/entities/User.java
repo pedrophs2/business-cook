@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "bck_user")
@@ -16,6 +17,9 @@ public class User {
 	private String name;
 	private String email;
 	private String password;
+
+	@Transient
+	private String token;
 
 	public User() {
 	}
@@ -57,6 +61,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }

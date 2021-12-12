@@ -1,6 +1,7 @@
 package com.arpdevs.businesscook.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +23,12 @@ public class AuthController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody User user) {	
-		ResponseHandler<User> response = authService.login(user);
-		return ResponseEntity.status(response.getStatus()).body(response);
+		try {
+			ResponseHandler<User> response = authService.login(user);
+			return ResponseEntity.status(response.getStatus()).body(response);
+		} catch(Exception ex) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro no processo de requisição");
+		}
 	}
 	
 	@PostMapping("/signup")
