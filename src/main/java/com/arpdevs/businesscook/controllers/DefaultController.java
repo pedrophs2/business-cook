@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "Default", tags = {"Default Requests"})
 public class DefaultController {
 	
-	@GetMapping(produces = "plain/text")
+	@GetMapping(produces = "application/json")
 	@ApiOperation(value = "Shows a welcome message")
 	public String defaultMessage() {
 		return "This is a RESTful API"; 
