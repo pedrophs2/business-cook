@@ -23,27 +23,8 @@ public class BusinessCookApplication {
 	
 	@PostConstruct
     public void init(){
-      TimeZone.setDefault(TimeZone.getTimeZone("Brazil/East"));
+		System.out.println("TimeZone Changed");
+		TimeZone.setDefault(TimeZone.getTimeZone("Brazil/East"));
     }
-
-	@Bean
-	public AuthService getAuthService() {
-		return new AuthService();
-	}
-	
-	@Bean
-	public ProductService getProductService() {
-		return new ProductService();
-	}
-	
-	@Bean
-	public RecipeService getRecipeService() {
-		return new RecipeService();
-	}
-	
-	@Bean
-	public RecipeItemService getRecipeItemService() {
-		return new RecipeItemService();
-	}
 
 }

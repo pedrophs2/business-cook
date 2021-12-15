@@ -5,11 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import com.arpdevs.businesscook.handlers.ResponseHandler;
 import com.arpdevs.businesscook.models.entities.Recipe;
 import com.arpdevs.businesscook.models.repositories.RecipeRepository;
 
+@Service
 public class RecipeService {
 	
 	@Autowired

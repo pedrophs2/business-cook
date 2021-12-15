@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.stereotype.Service;
 
 import com.arpdevs.businesscook.handlers.ResponseHandler;
 import com.arpdevs.businesscook.helpers.JwtHelper;
@@ -14,6 +15,7 @@ import com.arpdevs.businesscook.models.repositories.UserRepository;
 import com.arpdevs.businesscook.validators.auth.LoginValidator;
 import com.arpdevs.businesscook.validators.auth.SignUpValidator;
 
+@Service
 public class AuthService {
 
 	@Autowired

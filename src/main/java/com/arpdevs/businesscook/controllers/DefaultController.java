@@ -18,8 +18,8 @@ public class DefaultController {
 		return "There has been an error, please send a message to our support";
 	}
 	
-	@GetMapping("/testedan")
-	public String testeDan() {
+	@GetMapping("/docs")
+	public String swaggerDocs() {
 		return "Hello World !";
 	}
 

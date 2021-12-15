@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import com.arpdevs.businesscook.handlers.ResponseHandler;
 import com.arpdevs.businesscook.models.entities.Product;
@@ -11,6 +12,7 @@ import com.arpdevs.businesscook.models.repositories.ProductRepository;
 import com.arpdevs.businesscook.validators.product.CreateProductValidator;
 import com.arpdevs.businesscook.validators.product.UpdateProductValidator;
 
+@Service
 public class ProductService {
 
 	@Autowired
