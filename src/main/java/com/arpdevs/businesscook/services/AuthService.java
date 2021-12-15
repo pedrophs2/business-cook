@@ -47,7 +47,7 @@ public class AuthService {
 		return new ResponseHandler<User>(HttpStatus.OK, "Login efetuado com sucesso !", loggedUser);
 	}
 
-	public ResponseHandler<User> signUp(User user) {
+	public ResponseHandler<User> signUp(User user) throws Exception {
 		SignUpValidator validator = new SignUpValidator();
 		Optional<String> errors = validator.validate(user);
 
@@ -60,6 +60,7 @@ public class AuthService {
 			return new ResponseHandler<User>(HttpStatus.BAD_REQUEST, "Usuário já cadastrado");
 
 		repository.save(user);
+		user.setToken(this.authenticate(user));
 
 		return new ResponseHandler<User>(HttpStatus.CREATED, "Usuário cadastrado com sucesso !", user);
 	}

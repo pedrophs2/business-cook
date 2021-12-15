@@ -15,33 +15,57 @@ import com.arpdevs.businesscook.handlers.ResponseHandler;
 import com.arpdevs.businesscook.models.entities.Product;
 import com.arpdevs.businesscook.services.ProductService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/product")
 @CrossOrigin
+@Api(value = "Products", tags = {"Products"})
 public class ProductController {
 	
 	@Autowired
 	private ProductService productService;
 	
-	@GetMapping
+	@GetMapping(produces = "application/json")
+	@ApiOperation(value = "Returns a list of products")
+	@ApiResponses( value = {
+			@ApiResponse(code = 200, message = "Products found", response = Product.class, responseContainer = "List"),
+			@ApiResponse(code = 204, message = "No product found")
+	})
 	public ResponseEntity<?> getAll() {
 		ResponseHandler<Iterable<Product>> response = productService.getAll();
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping(value = "/{id}", produces = "application/json")
+	@ApiOperation(value = "Returns a product")
+	@ApiResponses( value = {
+			@ApiResponse(code = 200, message = "Product found", response = Product.class),
+			@ApiResponse(code = 204, message = "No product found")
+	})
 	public ResponseEntity<?> getById(@PathVariable("id") int id) {
 		ResponseHandler<Product> response = productService.getById(id);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
-	@PostMapping
+	@PostMapping(produces = "application/json")
+	@ApiOperation(value = "Create a product")
+	@ApiResponses( value = {
+			@ApiResponse(code = 201, message = "Product created", response = Product.class),
+	})
 	public ResponseEntity<?> createProduct(@RequestBody Product product) {
 		ResponseHandler<Product> response = productService.createProduct(product);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
-	@PutMapping
+	@PutMapping(produces = "application/json")
+	@ApiOperation(value = "Update a product")
+	@ApiResponses( value = {
+			@ApiResponse(code = 201, message = "Product updated", response = Product.class),
+	})
 	public ResponseEntity<?> updateProduct(@RequestBody Product product) {
 		ResponseHandler<Product> response = productService.updateProduct(product);
 		return ResponseEntity.status(response.getStatus()).body(response);

@@ -17,9 +17,15 @@ import com.arpdevs.businesscook.models.entities.Recipe;
 import com.arpdevs.businesscook.services.RecipeItemService;
 import com.arpdevs.businesscook.services.RecipeService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/recipe")
 @CrossOrigin
+@Api(value = "Recipes", tags = {"Recipes"})
 public class RecipeController {
 
 	@Autowired
@@ -28,33 +34,60 @@ public class RecipeController {
 	@Autowired
 	RecipeItemService itemsService;
 	
-	@GetMapping
+	
+	@GetMapping(produces = "application/json")
+	@ApiOperation(value = "Returns a list of recipes")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Recipes found", response = Recipe.class, responseContainer = "List"),
+			@ApiResponse(code = 204, message = "No recipe found")
+	})
 	public ResponseEntity<?> getAll() {
 		ResponseHandler<Iterable<Recipe>> response = recipeService.getAll();
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
-	@GetMapping("/{id}")
+	
+	@GetMapping(value = "/{id}", produces = "application/json")
+	@ApiOperation(value = "Returns a recipe by its ID")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Recipe found", response = Recipe.class),
+			@ApiResponse(code = 204, message = "No recipe found")
+	})
 	public ResponseEntity<?> getById(@PathVariable("id") int id) {
 		ResponseHandler<Recipe> response = recipeService.getById(id);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
-	@PostMapping
+	
+	@PostMapping(produces = "application/json")
+	@ApiOperation(value = "Creates a new recipe")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Recipe created", response = Recipe.class),
+	})
 	public ResponseEntity<?> createRecipe(@RequestBody Recipe recipe) {
 		ResponseHandler<Recipe> response = recipeService.saveRecipe(recipe);
 		itemsService.createFromRecipe(recipe);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
-	@PutMapping
+	
+	@PutMapping(produces = "application/json")
+	@ApiOperation(value = "Update a existing recipe")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Recipe updated", response = Recipe.class),
+	})
 	public ResponseEntity<?> updateRecipe(@RequestBody Recipe recipe) {
 		ResponseHandler<Recipe> response = recipeService.saveRecipe(recipe);
 		itemsService.updateFromRecipe(recipe);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
-	@DeleteMapping
+	
+	@DeleteMapping(produces = "application/json")
+	@ApiOperation(value = "Apaga uma receita")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Receitas excluída", response = Recipe.class),
+	})
 	public ResponseEntity<?> deleteRecipe(@RequestBody Recipe recipe) {
 		itemsService.deleteFromRecipe(recipe);
 		ResponseHandler<Recipe> response = recipeService.deleteRecipe(recipe);
