@@ -2,30 +2,26 @@ package com.arpdevs.businesscook.validators.auth;
 
 import java.util.Optional;
 
+import com.arpdevs.businesscook.exceptions.ValidationException;
 import com.arpdevs.businesscook.models.entities.User;
 import com.arpdevs.businesscook.validators.Validator;
 
 public class SignUpValidator extends Validator<User> {
 
-	public Optional<String> validateName() {
+	public void validateName() throws ValidationException {
 		if (object.getName() == null || object.getName().trim().equals(""))
-			return Optional.of("Nome deve ser preenchido");
+			throw new ValidationException("Nome deve ser preenchido");
 
-		return Optional.empty();
 	}
 
-	public Optional<String> validateEmail() {
+	public void validateEmail() throws ValidationException {
 		if (object.getEmail() == null || object.getEmail().trim().equals(""))
-			return Optional.of("Email deve ser preenchido");
-
-		return Optional.empty();
+			throw new ValidationException("Email deve ser preenchido");
 	}
 
-	public Optional<String> validatePassword() {
+	public void validatePassword() throws ValidationException {
 		if (object.getPassword() == null || object.getPassword().trim().equals(""))
-			return Optional.of("Email deve ser preenchido");
-
-		return Optional.empty();
+			throw new ValidationException("Email deve ser preenchido");
 	}
 
 }

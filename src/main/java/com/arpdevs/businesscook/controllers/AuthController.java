@@ -1,5 +1,7 @@
 package com.arpdevs.businesscook.controllers;
 
+import com.arpdevs.businesscook.builders.ResponseBuilder;
+import com.arpdevs.businesscook.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,10 +38,12 @@ public class AuthController {
 	@PostMapping(value = "/login", produces = "application/json")
 	public ResponseEntity<?> login(@RequestBody User user) {	
 		try {
-			ResponseHandler<User> response = authService.login(user);
-			return ResponseEntity.status(response.getStatus()).body(response);
+			User loggedUser = authService.login(user);
+			return new ResponseBuilder<User>(loggedUser).ok();
+		} catch(ValidationException ve) {
+			return new ResponseBuilder().badRequest(ve.getMessage());
 		} catch(Exception ex) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro no processo de requisição");
+			return new ResponseBuilder().internalServerError();
 		}
 	}
 	
@@ -50,10 +54,12 @@ public class AuthController {
 	@PostMapping(value = "/signup", produces = "application/json")
 	public ResponseEntity<?> signUp(@RequestBody User user) {
 		try {
-			ResponseHandler<User> response = authService.signUp(user);
-			return ResponseEntity.status(response.getStatus()).body(response);
+			authService.signUp(user);
+			return new ResponseBuilder<User>(user).created();
+		} catch(ValidationException ve) {
+			return new ResponseBuilder().badRequest(ve.getMessage());
 		} catch(Exception ex) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro no processo de requisição");
+			return new ResponseBuilder().internalServerError();
 		}
 	}
 

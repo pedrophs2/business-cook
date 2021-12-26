@@ -1,5 +1,8 @@
 package com.arpdevs.businesscook.controllers;
 
+import com.arpdevs.businesscook.builders.ResponseBuilder;
+import com.arpdevs.businesscook.exceptions.BadRequestException;
+import com.arpdevs.businesscook.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,8 +39,14 @@ public class ProductController {
 			@ApiResponse(code = 204, message = "No product found")
 	})
 	public ResponseEntity<?> getAll() {
-		ResponseHandler<Iterable<Product>> response = productService.getAll();
-		return ResponseEntity.status(response.getStatus()).body(response);
+		try {
+			Iterable<Product> products = productService.getAll();
+			return new ResponseBuilder<Iterable<Product>>(products).ok();
+		} catch(BadRequestException bre) {
+			return new ResponseBuilder().badRequest(bre.getMessage());
+		} catch(Exception ex) {
+			return new ResponseBuilder().internalServerError();
+		}
 	}
 	
 	@GetMapping(value = "/{id}", produces = "application/json")
@@ -47,8 +56,14 @@ public class ProductController {
 			@ApiResponse(code = 204, message = "No product found")
 	})
 	public ResponseEntity<?> getById(@PathVariable("id") int id) {
-		ResponseHandler<Product> response = productService.getById(id);
-		return ResponseEntity.status(response.getStatus()).body(response);
+		try {
+			Product product = productService.getById(id);
+			return new ResponseBuilder<Product>(product).ok();
+		} catch(BadRequestException bre) {
+			return new ResponseBuilder().badRequest(bre.getMessage());
+		} catch(Exception ex) {
+			return new ResponseBuilder().internalServerError();
+		}
 	}
 	
 	@PostMapping(produces = "application/json")
@@ -57,18 +72,34 @@ public class ProductController {
 			@ApiResponse(code = 201, message = "Product created", response = Product.class),
 	})
 	public ResponseEntity<?> createProduct(@RequestBody Product product) {
-		ResponseHandler<Product> response = productService.createProduct(product);
-		return ResponseEntity.status(response.getStatus()).body(response);
+		try {
+			productService.createProduct(product);
+			return new ResponseBuilder<Product>(product).created();
+		} catch(BadRequestException bre) {
+			return new ResponseBuilder().badRequest(bre.getMessage());
+		} catch(ValidationException ve) {
+			return new ResponseBuilder().badRequest(ve.getMessage());
+		} catch(Exception ex) {
+			return new ResponseBuilder().internalServerError();
+		}
 	}
 	
 	@PutMapping(produces = "application/json")
 	@ApiOperation(value = "Update a product")
 	@ApiResponses( value = {
-			@ApiResponse(code = 201, message = "Product updated", response = Product.class),
+			@ApiResponse(code = 200, message = "Product updated", response = Product.class),
 	})
 	public ResponseEntity<?> updateProduct(@RequestBody Product product) {
-		ResponseHandler<Product> response = productService.updateProduct(product);
-		return ResponseEntity.status(response.getStatus()).body(response);
+		try {
+			productService.updateProduct(product);
+			return new ResponseBuilder<Product>(product).ok();
+		} catch(BadRequestException bre) {
+			return new ResponseBuilder().badRequest(bre.getMessage());
+		} catch(ValidationException ve) {
+			return new ResponseBuilder().badRequest(ve.getMessage());
+		} catch(Exception ex) {
+			return new ResponseBuilder().internalServerError();
+		}
 	}
 
 }

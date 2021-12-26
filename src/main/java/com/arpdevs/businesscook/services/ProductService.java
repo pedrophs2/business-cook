@@ -2,6 +2,9 @@ package com.arpdevs.businesscook.services;
 
 import java.util.Optional;
 
+import com.arpdevs.businesscook.exceptions.BadRequestException;
+import com.arpdevs.businesscook.exceptions.ValidationException;
+import com.arpdevs.businesscook.helpers.IterableHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,39 +21,38 @@ public class ProductService {
 	@Autowired
 	ProductRepository repository;
 	
-	public ResponseHandler<Iterable<Product>> getAll() {
-		return new ResponseHandler<Iterable<Product>>(HttpStatus.OK, "Produtos encontrados", repository.findAll());
+	public Iterable<Product> getAll() throws BadRequestException, Exception {
+		Iterable<Product> products = repository.findAll();
+
+		if(new IterableHelper<Product>(products).isEmpty())
+			throw new BadRequestException("Nenhum produto encontrado");
+
+		return repository.findAll();
 	}
 	
-	public ResponseHandler<Product> getById(int id) {
+	public Product getById(int id) throws BadRequestException, Exception {
 		Optional<Product> product = repository.findById(id);
 		
 		if(product.isPresent())
-			return new ResponseHandler<Product>(HttpStatus.OK, "Produto Encontrado", product.get());
+			return product.get();
 		
-		return new ResponseHandler<Product>(HttpStatus.NO_CONTENT, "Nenhum produto encontrado");
+		throw new BadRequestException("Nenhum produto encontrado");
 	}
 
-	public ResponseHandler<Product> createProduct(Product product) {
+	public Product createProduct(Product product) throws ValidationException, BadRequestException, Exception {
 		CreateProductValidator validator = new CreateProductValidator();
-		Optional<String> errors = validator.validate(product);
-		
-		if(errors.isPresent())
-			return new ResponseHandler<Product>(HttpStatus.BAD_REQUEST, errors.get());
+		validator.validate(product);
 		
 		repository.save(product);
-		return new ResponseHandler<Product>(HttpStatus.CREATED, "Produto registrado com sucesso", product);
+		return product;
 	}
 	
-	public ResponseHandler<Product> updateProduct(Product product) {
+	public Product updateProduct(Product product) throws ValidationException, BadRequestException, Exception {
 		UpdateProductValidator validator = new UpdateProductValidator();
-		Optional<String> errors = validator.validate(product);
-		
-		if(errors.isPresent())
-			return new ResponseHandler<Product>(HttpStatus.BAD_REQUEST, errors.get());
+		validator.validate(product);
 		
 		repository.save(product);
-		return new ResponseHandler<Product>(HttpStatus.CREATED, "Produto atualizado com sucesso", product);
+		return product;
 	}
 
 }

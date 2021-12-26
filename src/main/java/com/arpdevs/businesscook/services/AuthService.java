@@ -2,6 +2,8 @@ package com.arpdevs.businesscook.services;
 
 import java.util.Optional;
 
+import com.arpdevs.businesscook.exceptions.BadRequestException;
+import com.arpdevs.businesscook.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,42 +29,36 @@ public class AuthService {
 	@Autowired
 	private AuthenticationManager authManager;
 
-	public ResponseHandler<User> login(User user) throws Exception {
+	public User login(User user) throws ValidationException, Exception {
 		LoginValidator validator = new LoginValidator();
-		Optional<String> errors = validator.validate(user);
-
-		if (errors.isPresent())
-			return new ResponseHandler<User>(HttpStatus.BAD_REQUEST, errors.get(), null);
+		validator.validate(user);
 
 		User loggedUser = repository.findByEmailContaining(user.getEmail());
 
 		if (loggedUser == null)
-			return new ResponseHandler<User>(HttpStatus.BAD_REQUEST, "Usuário/Senha Incorretos");
+			throw new BadRequestException("Usuário e/ou senha incorretos");
 
 		if (!user.getPassword().equals(loggedUser.getPassword()))
-			return new ResponseHandler<User>(HttpStatus.BAD_REQUEST, "Usuário/Senha Incorretos");
+			throw new BadRequestException("Usuário e/ou senha incorretos");
 		
 		loggedUser.setToken(this.authenticate(user));
 
-		return new ResponseHandler<User>(HttpStatus.OK, "Login efetuado com sucesso !", loggedUser);
+		return loggedUser;
 	}
 
-	public ResponseHandler<User> signUp(User user) throws Exception {
+	public User signUp(User user) throws ValidationException, Exception {
 		SignUpValidator validator = new SignUpValidator();
-		Optional<String> errors = validator.validate(user);
-
-		if (errors.isPresent())
-			return new ResponseHandler<User>(HttpStatus.BAD_REQUEST, errors.get());
+		validator.validate(user);
 
 		User validation = repository.findByEmailContaining(user.getEmail());
 
 		if (validation != null)
-			return new ResponseHandler<User>(HttpStatus.BAD_REQUEST, "Usuário já cadastrado");
+			throw new ValidationException("Usuário já cadastrado");
 
 		repository.save(user);
 		user.setToken(this.authenticate(user));
 
-		return new ResponseHandler<User>(HttpStatus.CREATED, "Usuário cadastrado com sucesso !", user);
+		return user;
 	}
 	
 	private String authenticate(User user) throws Exception {

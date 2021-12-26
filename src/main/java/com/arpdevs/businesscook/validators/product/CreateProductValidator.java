@@ -2,23 +2,24 @@ package com.arpdevs.businesscook.validators.product;
 
 import java.util.Optional;
 
+import com.arpdevs.businesscook.exceptions.ValidationException;
 import com.arpdevs.businesscook.models.entities.Product;
 import com.arpdevs.businesscook.validators.Validator;
 
 public class CreateProductValidator extends Validator<Product> {
 
-	public Optional<String> validateProductAttributes() {
+	public void validateName() throws ValidationException {
 		if (object.getName() == null || object.getName().trim().equals(""))
-			return Optional.of("É necessário um nome para o produtor");
-
-		if (object.getPrice() == null)
-			return Optional.of("É necessário um valor para o produto");
-
-		if (object.getAmount() == null)
-			return Optional.of("É necessário a quantidade da embalagem do produto");
-
-		return Optional.empty();
-
+			throw new ValidationException("É necessário um nome para o produtor");
 	}
 
+	public void validatePrice() throws ValidationException {
+		if (object.getPrice() == null)
+			throw new ValidationException("É necessário um valor para o produto");
+	}
+
+	public void validateAmount() throws ValidationException {
+		if (object.getAmount() == null)
+			throw new ValidationException("É necessário a quantidade da embalagem do produto");
+	}
 }
